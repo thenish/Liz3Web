@@ -2,16 +2,44 @@ package de.liz3.liz3web.browser;
 
 import com.jfoenix.controls.JFXTextField;
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.dom.By;
+import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
+import com.teamdev.jxbrowser.chromium.dom.DOMNode;
 import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
 import de.liz3.liz3web.gui.GuiManager;
+import de.liz3.liz3web.gui.controller.PageSourceController;
+import de.liz3.liz3web.util.HttpMethods;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Tab;
+import javafx.stage.Stage;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by yannh on 29.11.2016.
  */
 public class BrowserTab {
+
+    private Parent sourceParent;
+    private Stage sourceStage;
+    private Scene sourceScene;
+    private boolean sourceVisible = false;
+
 
     private String currentTitle;
     private String currentUrl;
@@ -19,6 +47,7 @@ public class BrowserTab {
     private BrowserView browserView;
     private Tab tab;
     private JFXTextField urlBar;
+    private DOMSource source;
 
     public String getCurrentTitle() {
         return currentTitle;
@@ -109,6 +138,36 @@ public class BrowserTab {
 
 
     }
+
+    public void initSourceView() {
+
+        FXMLLoader loader = new FXMLLoader();
+
+
+        try {
+            BrowserTab.this.sourceParent = loader.load(getClass().getResourceAsStream("/com/liz3/browser/recs/PageSource.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        BrowserTab.this.sourceStage = new Stage();
+        BrowserTab.this.sourceScene = new Scene(sourceParent, 1000, 640);
+
+        BrowserTab.this.sourceStage.setScene(sourceScene);
+
+        BrowserTab.this.sourceStage.setTitle(BrowserTab.this.currentTitle);
+        PageSourceController con = loader.getController();
+        BrowserTab.this.sourceStage.show();
+        con.initAsLoading();
+
+        this.sourceVisible = true;
+        Platform.runLater(() -> {
+
+
+        });
+
+    }
+
     public void browseTo(String url) {
 
         if (!url.startsWith("http")) {
