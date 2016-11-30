@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="531.0" prefWidth="808.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <BorderPane prefHeight="26.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <right>
+            <HBox prefHeight="26.0" prefWidth="291.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="cnlBtn" text="Cancel" />
+                  <JFXButton fx:id="onNewTab" text="Apply on new Tab" />
+                  <JFXButton fx:id="onActiveTab" text="Apply on active Tab" />
+               </children>
+            </HBox>
+         </right>
+      </BorderPane>
+   </bottom>
+   <left>
+      <ListView fx:id="filesList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <top>
+      <Text fx:id="stateText" strokeType="OUTSIDE" strokeWidth="0.0" text="Test" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <TextArea fx:id="editor" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

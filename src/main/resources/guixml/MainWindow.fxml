@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="320.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.liz3.liz3web.gui.controller.MainController">
+   <top>
+      <BorderPane prefHeight="31.0" prefWidth="433.0" BorderPane.alignment="CENTER">
+         <right>
+            <BorderPane prefHeight="31.0" prefWidth="260.0" BorderPane.alignment="CENTER">
+               <left>
+                  <Label text="Search:" BorderPane.alignment="CENTER" />
+               </left>
+               <center>
+                  <JFXTextField fx:id="searchField" BorderPane.alignment="CENTER" />
+               </center>
+               <right>
+                  <MenuButton fx:id="mainMenu" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" text="Menu" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+         </right>
+         <center>
+            <BorderPane prefHeight="31.0" prefWidth="551.0" BorderPane.alignment="CENTER">
+               <center>
+                  <JFXTextField fx:id="urlField" BorderPane.alignment="CENTER" />
+               </center>
+               <left>
+                  <HBox prefHeight="31.0" prefWidth="110.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <JFXButton fx:id="backBtn" text="Back" />
+                        <JFXButton fx:id="forwardBtn" text="Forward" />
+                     </children>
+                  </HBox>
+               </left>
+            </BorderPane>
+         </center></BorderPane>
+   </top>
+   <center>
+      <TabPane fx:id="tabPane" prefHeight="598.0" prefWidth="978.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER">
+         <tabs>
+            <Tab fx:id="newTab" closable="false" text="+">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+         </tabs></TabPane>
+   </center>
+</BorderPane>
