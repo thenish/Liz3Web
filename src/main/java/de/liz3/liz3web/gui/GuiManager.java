@@ -8,13 +8,11 @@ import de.liz3.liz3web.gui.controller.MainController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
 
@@ -47,7 +45,7 @@ public class GuiManager extends Application {
 
 
         FXMLLoader loader = new FXMLLoader();
-        rootParent = loader.load(getClass().getResourceAsStream("/guixml/MainWindow.fxml"));
+        rootParent = loader.load(getClass().getResourceAsStream("/MainWindow.fxml"));
 
         if (rootParent != null) {
 
