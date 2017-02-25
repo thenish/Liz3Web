@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="320.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.liz3.liz3web.gui.controller.MainController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="320.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.liz3.liz3web.gui.controller.MainController">
    <top>
       <BorderPane prefHeight="31.0" prefWidth="433.0" BorderPane.alignment="CENTER">
          <right>
-            <BorderPane prefHeight="31.0" prefWidth="260.0" BorderPane.alignment="CENTER">
-               <left>
-                  <Label text="Search:" BorderPane.alignment="CENTER" />
-               </left>
-               <center>
-                  <JFXTextField fx:id="searchField" BorderPane.alignment="CENTER" />
-               </center>
+            <BorderPane prefHeight="31.0" prefWidth="69.0" BorderPane.alignment="CENTER">
                <right>
                   <MenuButton fx:id="mainMenu" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" text="Menu" BorderPane.alignment="CENTER" />
                </right>
@@ -28,10 +23,16 @@
                   <JFXTextField fx:id="urlField" BorderPane.alignment="CENTER" />
                </center>
                <left>
-                  <HBox prefHeight="31.0" prefWidth="110.0" BorderPane.alignment="CENTER">
+                  <HBox prefHeight="31.0" prefWidth="77.0" BorderPane.alignment="CENTER">
                      <children>
-                        <JFXButton fx:id="backBtn" text="Back" />
-                        <JFXButton fx:id="forwardBtn" text="Forward" />
+                        <JFXButton fx:id="backBtn" text="&lt;">
+                           <font>
+                              <Font size="15.0" />
+                           </font></JFXButton>
+                        <JFXButton fx:id="forwardBtn" text="&gt;">
+                           <font>
+                              <Font size="15.0" />
+                           </font></JFXButton>
                      </children>
                   </HBox>
                </left>

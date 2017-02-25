@@ -1,6 +1,9 @@
 package de.liz3.liz3web.gui.menus;
 
+import de.liz3.liz3web.gui.GuiManager;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
@@ -19,8 +22,13 @@ public class MainMenu {
 
         MenuItem historyPoint = new MenuItem("History");
 
-        MenuItem pageSourcePoint = new MenuItem("View Page Source");
-
+        MenuItem pageSourcePoint = new MenuItem("Debugger");
+        pageSourcePoint.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GuiManager.manager.getActive().openDebugger();
+            }
+        });
         MenuItem utilitysPoint = new MenuItem("Utility's");
 
         MenuItem downloadsPoint = new MenuItem("Downloads");

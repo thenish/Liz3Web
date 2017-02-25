@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>History</title>
+
+    <link href="locals://locals/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<div class="container">
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Link</th>
+            <th>Date</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody id="table-Body">
+
+        </tbody>
+    </table>
+
+</div>
+
+
+<script src="locals://locals/bootstrap/js/jquery.js" type="application/javascript"></script>
+<script src="locals://locals/bootstrap/js/bootstrap.js" type="application/javascript"></script>
+<script type="application/javascript" id="loader">
+
+    function parse(resp) {
+
+
+        var json = JSON.parse(resp);
+
+        var data = json.data;
+
+
+
+        for(var i = data.length; i > -1; i--) {
+
+            for(var x = 0; x < data.length; x++) {
+                var obj = data[x];
+
+                if(obj.id == i) {
+
+                    var t = "<tr>";
+                    t += "<td><a href='" + obj.url +"'>" + obj.url + "</a></td>\n";
+                    t += "<td>" + obj.nice +"</td>\n";
+                    t += "<td><a class='button button-primary' id='del-" + obj.id +"' href='#'>Delete</a></td>\n";
+                    t += "</tr>";
+
+                    $("#table-Body").append(t);
+                }
+            }
+
+        }
+
+
+    }
+
+</script>
+
+</body>
+</html>

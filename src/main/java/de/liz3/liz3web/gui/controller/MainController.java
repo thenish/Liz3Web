@@ -3,21 +3,24 @@ package de.liz3.liz3web.gui.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.DownloadItem;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
 import de.liz3.liz3web.Main;
 import de.liz3.liz3web.browser.BrowserTab;
+import de.liz3.liz3web.browser.TabManager;
 import de.liz3.liz3web.gui.GuiManager;
 import de.liz3.liz3web.gui.menus.MainMenu;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 /**
  * Created by yannh on 29.11.2016.
@@ -40,14 +43,16 @@ public class MainController {
     public JFXTextField urlField;
 
     @FXML
-    public JFXTextField searchField;
+    public Tab newTab;
 
     @FXML
-    public Tab newTab;
+    public BorderPane rootPane;
 
 
     public void setUp() {
 
+        GuiManager.manager = new TabManager();
+        GuiManager.manager.setController(this);
         Main.dPrint("Setting up gui elements");
         MainMenu.createMenu(mainMenu);
         tabPane.getTabs().remove(newTab);
@@ -67,24 +72,13 @@ public class MainController {
 
                 if (newValue == newTab) {
 
-                    tabPane.getTabs().remove(newTab);
-                    Tab tab = new Tab("new tab");
-                    Browser browser = new Browser();
-                    BrowserView newView = new BrowserView(browser);
-                    tab.setContent(newView);
-                    tabPane.getTabs().add(tab);
-                    GuiManager.openTabs.add(new BrowserTab(browser, newView, tab, urlField));
-                    tabPane.getSelectionModel().select(tab);
-                    tabPane.getTabs().add(newTab);
-                    browser.loadURL("");
-                    urlField.setText("about:blank");
-                    GuiManager.currentActive = tab;
+                    GuiManager.manager.newTab();
                     return;
                 }
 
                 GuiManager.currentActive = newValue;
-                for(BrowserTab tab : GuiManager.openTabs) {
-                    if(tab.getTab() == newValue) {
+                for (BrowserTab tab : GuiManager.openTabs) {
+                    if (tab.getTab() == newValue) {
                         urlField.setText(tab.getCurrentUrl());
                     }
                 }
@@ -97,9 +91,9 @@ public class MainController {
 
                 Tab activeTab = tabPane.getSelectionModel().getSelectedItem();
 
-                for(BrowserTab tab : GuiManager.openTabs) {
+                for (BrowserTab tab : GuiManager.openTabs) {
 
-                    if(tab.getTab().equals(activeTab)) {
+                    if (tab.getTab().equals(activeTab)) {
 
 
                         tab.browseTo(urlField.getText());
@@ -108,28 +102,6 @@ public class MainController {
 
 
             }
-        });
-        searchField.setOnKeyReleased(event -> {
-
-            if (event.getCode() == KeyCode.ENTER) {
-
-                Tab activeTab = tabPane.getSelectionModel().getSelectedItem();
-
-                for(BrowserTab tab : GuiManager.openTabs) {
-
-                    if(tab.getTab().equals(activeTab)) {
-
-                        String text = searchField.getText();
-                        text.replace(" ", "+");
-                        text.replace("+", "%2B");
-
-                        tab.browseTo("http://google.com/search?q=" + text);
-                    }
-                }
-
-
-            }
-
         });
         forwardBtn.setOnAction(event -> {
 
@@ -160,4 +132,48 @@ public class MainController {
 
     }
 
+    public void popUpDownloadFrame(DownloadItem item) {
+
+
+        item.pause();
+        Pane pane = new Pane();
+        BorderPane p = GuiManager.browserController.rootPane;
+
+        Label label = new Label();
+        JFXButton accept = new JFXButton("Download");
+        JFXButton reject = new JFXButton("Reject");
+        JFXButton execute = new JFXButton("Execute");
+
+
+
+        accept.setOnAction(event -> {
+
+            item.resume();
+            p.setBottom(null);
+        });
+        reject.setOnAction(event -> {
+
+            item.cancel();
+            p.setBottom(null);
+        });
+        accept.setLayoutX(60);
+        accept.setLayoutY(30);
+        reject.setLayoutX(135);
+        reject.setLayoutY(30);
+        label.setLayoutX(10);
+        label.setLayoutY(10);
+        label.setText(item.getURL());
+     //   label.setPrefHeight(10);
+       // label.setPrefWidth(item.getURL().length() * 2);
+
+        pane.getChildren().addAll(accept, reject, label);
+
+        pane.setPrefWidth(350);
+        pane.setPrefHeight(90);
+
+        System.out.println("LoL");
+        Platform.runLater(() -> p.setBottom(pane));
+
+
+    }
 }
