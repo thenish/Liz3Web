@@ -7,7 +7,6 @@ import de.liz3.liz3web.gui.controller.MainController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.BorderPane;
 
 /**
  * Created by yannh on 22.02.2017.
