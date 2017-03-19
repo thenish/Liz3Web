@@ -28,6 +28,7 @@ public class GuiManager extends Application {
     public static TabManager manager;
     public static Parent rootParent;
     public static Scene rootScene;
+    public static Stage rootStage;
     public static ArrayList<BrowserTab> openTabs = new ArrayList<>();
     public static Tab currentActive;
     public static CommandLineWorker cmdWorker;
@@ -41,6 +42,7 @@ public class GuiManager extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
 
 
         history = new History();
@@ -72,7 +74,7 @@ public class GuiManager extends Application {
             Main.dPrint("Showing the window");
             primaryStage.show();
             primaryStage.toFront();
-
+            rootStage = primaryStage;
         } else {
             if (Main.isDebug) {
                 throw new Exception("Fail while loading the main fxml file");

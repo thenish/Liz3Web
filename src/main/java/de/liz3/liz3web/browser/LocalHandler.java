@@ -95,7 +95,7 @@ public class LocalHandler {
 
         long entries = GuiManager.history.getIndex();
 
-        if(entries <= 20) {
+
 
             JSONObject obj = new JSONObject();
 
@@ -122,7 +122,7 @@ public class LocalHandler {
             b.executeJavaScript("setTimeout(function () {\n" +
                     "        parse('" + obj.toString() + "');\n" +
                     "    }, 1500);");
-        }
+
 
 
 

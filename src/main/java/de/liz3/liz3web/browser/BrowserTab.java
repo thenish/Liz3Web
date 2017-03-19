@@ -4,15 +4,20 @@ import com.jfoenix.controls.JFXTextField;
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.DownloadHandler;
 import com.teamdev.jxbrowser.chromium.DownloadItem;
+import com.teamdev.jxbrowser.chromium.FullScreenHandler;
 import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
 import de.liz3.liz3web.gui.GuiManager;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,7 +33,7 @@ public class BrowserTab {
     private Stage sourceStage;
     private Scene sourceScene;
     private boolean sourceVisible = false;
-
+    private Stage fullscreenStage;
     private String currentTitle;
     private String currentUrl;
     private Browser browser;
@@ -37,6 +42,7 @@ public class BrowserTab {
     private JFXTextField urlBar;
     private BrowserSource source;
     private BorderPane pane;
+    private boolean fullscreen;
 
     public BrowserTab(Browser browser, BrowserView view, Tab tab, JFXTextField urlBar) {
 
@@ -47,6 +53,77 @@ public class BrowserTab {
         this.pane = pane;
         source = new BrowserSource();
 
+        browser.setFullScreenHandler(new FullScreenHandler() {
+            @Override
+            public void onFullScreenEnter() {
+
+             Platform.runLater(() -> {
+                 
+                 BorderPane pane = new BorderPane();
+                 GuiManager.rootStage.hide();
+                 Stage stage = new Stage();
+                 pane.setCenter(browserView);
+
+                 stage.setScene(new Scene(pane));
+
+                 stage.setFullScreen(true);
+                 stage.show();
+                 fullscreen = true;
+                 fullscreenStage = stage;
+                 tab.setContent(null);
+             });
+            }
+
+            @Override
+            public void onFullScreenExit() {
+
+             Platform.runLater(() -> {
+                 fullscreenStage.close();
+                 GuiManager.rootStage.show();
+                 fullscreen = false;
+                 fullscreenStage = null;
+                 tab.setContent(view);
+             });
+            }
+        });
+        browserView.setOnKeyReleased(event -> {
+
+            if(event.getCode() == KeyCode.ESCAPE) {
+
+                if(fullscreen) {
+                    Platform.runLater(() -> {
+                        fullscreenStage.close();
+                        GuiManager.rootStage.show();
+                        fullscreen = false;
+                        fullscreenStage = null;
+                        tab.setContent(view);
+                    });
+                }
+            }
+            if(event.getCode() == KeyCode.F11) {
+
+                if(!fullscreen) {
+                    BorderPane pane = new BorderPane();
+                    GuiManager.rootStage.hide();
+                    Stage stage = new Stage();
+                    pane.setCenter(browserView);
+
+                    stage.setScene(new Scene(pane));
+
+                    stage.setFullScreen(true);
+                    stage.show();
+                    fullscreen = true;
+                    fullscreenStage = stage;
+                    tab.setContent(null);
+                } else {
+                    fullscreenStage.close();
+                    GuiManager.rootStage.show();
+                    fullscreen = false;
+                    fullscreenStage = null;
+                    tab.setContent(view);
+                }
+            }
+        });
         browser.setDownloadHandler(new DownloadHandler() {
 
             @Override
@@ -257,5 +334,9 @@ public class BrowserTab {
 
     public BorderPane getPane() {
         return pane;
+    }
+
+    public boolean isFullscreen() {
+        return fullscreen;
     }
 }
