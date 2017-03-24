@@ -1,10 +1,7 @@
 package de.liz3.liz3web.browser;
 
 import com.jfoenix.controls.JFXTextField;
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.DownloadHandler;
-import com.teamdev.jxbrowser.chromium.DownloadItem;
-import com.teamdev.jxbrowser.chromium.FullScreenHandler;
+import com.teamdev.jxbrowser.chromium.*;
 import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
 import de.liz3.liz3web.gui.GuiManager;
@@ -53,6 +50,7 @@ public class BrowserTab {
         this.pane = pane;
         source = new BrowserSource();
 
+
         browser.setFullScreenHandler(new FullScreenHandler() {
             @Override
             public void onFullScreenEnter() {
@@ -88,6 +86,7 @@ public class BrowserTab {
         });
         browserView.setOnKeyReleased(event -> {
 
+
             if(event.getCode() == KeyCode.ESCAPE) {
 
                 if(fullscreen) {
@@ -99,6 +98,21 @@ public class BrowserTab {
                         tab.setContent(view);
                     });
                 }
+            }
+            if(event.getCode() == KeyCode.F5) {
+                if(event.isControlDown()) {
+
+                    new Thread(() -> {
+                        CookieStorage storage = browser.getCookieStorage();
+                        browser.getCacheStorage().clearCache();
+                        storage.getAllCookies().clear();
+
+
+                    }).start();
+
+                    return;
+                }
+                reload();
             }
             if(event.getCode() == KeyCode.F11) {
 
@@ -124,17 +138,14 @@ public class BrowserTab {
                 }
             }
         });
-        browser.setDownloadHandler(new DownloadHandler() {
 
-            @Override
-            public boolean allowDownload(DownloadItem downloadItem) {
+        browser.setDownloadHandler(downloadItem -> {
 
 
-                GuiManager.browserController.popUpDownloadFrame(downloadItem);
+            GuiManager.browserController.popUpDownloadFrame(downloadItem);
 
 
-                return true;
-            }
+            return true;
         });
         this.tab.setOnCloseRequest(event -> {
 
@@ -210,6 +221,23 @@ public class BrowserTab {
         });
     }
 
+    public void fullscreen() {
+        BorderPane pane = new BorderPane();
+        GuiManager.rootStage.hide();
+        Stage stage = new Stage();
+        pane.setCenter(browserView);
+
+        stage.setScene(new Scene(pane));
+
+        stage.setFullScreen(true);
+        stage.show();
+        fullscreen = true;
+        fullscreenStage = stage;
+        tab.setContent(null);
+    }
+    public void reload() {
+        this.browser.reload();
+    }
     public String getCurrentTitle() {
         return currentTitle;
     }
@@ -238,6 +266,10 @@ public class BrowserTab {
         return browser;
     }
 
+    public String getDebuggerPath() {
+
+        return browser.getRemoteDebuggingURL();
+    }
     public void openDebugger() {
 
         source.show(this.browser);

@@ -1,5 +1,8 @@
 package de.liz3.liz3web.gui.menus;
 
+import de.liz3.liz3web.Main;
+import de.liz3.liz3web.browser.BrowserTab;
+import de.liz3.liz3web.browser.TabManager;
 import de.liz3.liz3web.gui.GuiManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -22,19 +25,30 @@ public class MainMenu {
 
         MenuItem historyPoint = new MenuItem("History");
 
+        historyPoint.setOnAction(event -> GuiManager.manager.insertNewTab("locals://history"));
+
         MenuItem pageSourcePoint = new MenuItem("Debugger");
-        pageSourcePoint.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                GuiManager.manager.getActive().openDebugger();
-            }
-        });
+        pageSourcePoint.setOnAction(event -> GuiManager.manager.getActive().openDebugger());
         MenuItem utilitysPoint = new MenuItem("Utility's");
 
         MenuItem downloadsPoint = new MenuItem("Downloads");
 
         MenuItem directFullScreenPoint = new MenuItem("Enter Fullscreen");
 
+        directFullScreenPoint.setOnAction(event -> {
+            if(GuiManager.currentActive == null)
+                return;
+            new Thread(() -> {
+
+                for(BrowserTab tab : GuiManager.openTabs) {
+                    if(tab.getTab() == GuiManager.currentActive) {
+                        Platform.runLater(() -> tab.fullscreen());
+
+                    }
+                }
+
+            }).start();
+        });
 
 
 

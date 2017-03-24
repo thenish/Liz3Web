@@ -24,6 +24,7 @@ public class History {
 
     public void loadIn() {
 
+    try {
         File f = new File("history.txt");
 
         if (!f.exists()) {
@@ -67,6 +68,9 @@ public class History {
             }
         }
 
+    }catch (Exception e) {
+
+    }
 
     }
 

@@ -50,6 +50,7 @@ public class BrowserSource {
             stage.sizeToScene();
         }
         controller.setup(browser.getDocument(), browser.getURL());
+        controller.chromeDebugger(browser.getRemoteDebuggingURL());
         stage.show();
         getRaws();
     }

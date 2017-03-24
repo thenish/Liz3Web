@@ -1,8 +1,13 @@
 package de.liz3.liz3web.gui.controller;
 
 import com.jfoenix.controls.JFXTextArea;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserType;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
+import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
@@ -13,6 +18,8 @@ import java.util.HashMap;
  */
 public class SourceController {
 
+    @FXML
+    private Tab chromeTab;
     @FXML
     public TreeView<String> sourceTreeView;
     @FXML
@@ -47,7 +54,21 @@ public class SourceController {
         });
     }
 
+    public void chromeDebugger(String url) {
 
+        new Thread(() -> {
+
+            Browser browser = new Browser();
+            BrowserView view = new BrowserView(browser);
+
+            browser.loadURL(url);
+
+            Platform.runLater(() -> chromeTab.setContent(view));
+
+        }).start();
+
+
+    }
 
     public TreeView<String> getSourceTreeView() {
         return sourceTreeView;

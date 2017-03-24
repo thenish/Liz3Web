@@ -16,23 +16,20 @@ public class CommandLineWorker {
 
     public CommandLineWorker() {
 
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        thread = new Thread(() -> {
 
 
-                Scanner sc = new Scanner(System.in);
+            Scanner sc = new Scanner(System.in);
 
 
-                while (sc.hasNextLine()) {
+            while (sc.hasNextLine()) {
 
-                    String line = sc.nextLine();
-                    if (line != null) {
-                        proceed(line);
-                    }
+                String line = sc.nextLine();
+                if (line != null) {
+                    proceed(line);
                 }
-
             }
+
         });
         thread.setName("Commandline Thread");
         thread.start();

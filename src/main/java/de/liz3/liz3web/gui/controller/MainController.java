@@ -13,6 +13,8 @@ import de.liz3.liz3web.gui.menus.MainMenu;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -27,6 +29,8 @@ import javafx.scene.layout.Pane;
  */
 public class MainController {
 
+    @FXML
+    public JFXButton reloadBtn;
     @FXML
     public TabPane tabPane;
 
@@ -50,6 +54,7 @@ public class MainController {
 
 
     public void setUp() {
+
 
         GuiManager.manager = new TabManager();
         GuiManager.manager.setController(this);
@@ -101,6 +106,18 @@ public class MainController {
                 }
 
 
+            }
+        });
+        reloadBtn.setOnAction(event -> {
+            if(GuiManager.currentActive == null) {
+                return;
+            }
+
+            for(BrowserTab tab : GuiManager.openTabs) {
+
+                if(tab.getTab() == GuiManager.currentActive) {
+                    tab.reload();
+                }
             }
         });
         forwardBtn.setOnAction(event -> {
