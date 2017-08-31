@@ -1,10 +1,9 @@
 package de.liz3.liz3web.util;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -20,6 +19,22 @@ public class HttpMethods {
             return getAsHttps(url);
         }
 
+    }
+
+    public static InputStream getFavIcon(String link) {
+        URL url = null;
+        try {
+            url = new URL(link);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            InputStream in = new BufferedInputStream(url.openStream());
+
+            return in;
+        } catch (IOException e) {
+           return null;
+        }
     }
 
     private static String getAsHttp(String url) throws IOException {

@@ -2,7 +2,6 @@ package de.liz3.liz3web.gui.controller;
 
 import com.jfoenix.controls.JFXTextArea;
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserType;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
 import javafx.application.Platform;
@@ -61,9 +60,12 @@ public class SourceController {
             Browser browser = new Browser();
             BrowserView view = new BrowserView(browser);
 
-            browser.loadURL(url);
+            Platform.runLater(() -> {
+                chromeTab.setContent(view);
+                browser.loadURL(url);
 
-            Platform.runLater(() -> chromeTab.setContent(view));
+
+            });
 
         }).start();
 

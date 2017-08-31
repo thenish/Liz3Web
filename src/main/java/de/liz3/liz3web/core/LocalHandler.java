@@ -1,18 +1,16 @@
-package de.liz3.liz3web.browser;
+package de.liz3.liz3web.core;
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserContext;
-import com.teamdev.jxbrowser.chromium.ProtocolService;
-import com.teamdev.jxbrowser.chromium.URLResponse;
-import de.liz3.liz3web.gui.GuiManager;
+import com.jfoenix.controls.JFXTextField;
+import com.teamdev.jxbrowser.chromium.*;
+import de.liz3.liz3web.Liz3Web;
+import de.liz3.liz3web.browserinc.HistoryEntry;
+import de.liz3.liz3web.browserinc.SettingsImpl;
 import de.liz3.liz3web.util.IOUtils;
 import javafx.application.Platform;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 /**
  * Created by yannh on 25.02.2017.
@@ -66,11 +64,6 @@ public class LocalHandler {
 
             Platform.runLater(() -> {
 
-
-                if (tab.getTab() == GuiManager.currentActive) {
-                    GuiManager.browserController.urlField.setText(url);
-
-                }
                 if (url.equalsIgnoreCase("locals://history")) {
 
                     tab.getTab().setText("History");
@@ -79,8 +72,18 @@ public class LocalHandler {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    printHistory(b);
+                    printHistory(b, tab.getUrlBar());
 
+                    return;
+                }
+                if(url.equalsIgnoreCase("locals://settings")) {
+
+                    try {
+                        b.loadHTML(IOUtils.convertStreamToString(LocalHandler.class.getResourceAsStream("/locals/settings.html")));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    handleSettings(b);
                 }
 
 
@@ -91,9 +94,15 @@ public class LocalHandler {
 
     }
 
-    private static void printHistory(Browser b) {
+    private static void handleSettings(Browser browser) {
 
-        long entries = GuiManager.history.getIndex();
+        JSValue v = browser.executeJavaScriptAndReturnValue("window");
+        v.asObject().setProperty("hook", new SettingsImpl(Liz3Web.liz3Web.getSettings()));
+
+    }
+    private static void printHistory(Browser b, JFXTextField f) {
+
+        long entries = Liz3Web.liz3Web.getHistory().getIndex();
 
 
 
@@ -104,7 +113,7 @@ public class LocalHandler {
             obj.put("more", false);
             JSONArray arr = new JSONArray();
 
-            for(HistoryEntry entry : GuiManager.history.getEntrys().values()) {
+            for(HistoryEntry entry : Liz3Web.liz3Web.getHistory().getEntrys().values()) {
 
                 JSONObject o = new JSONObject();
                 o.put("id", entry.getId());
@@ -124,7 +133,14 @@ public class LocalHandler {
                     "    }, 1500);");
 
 
-
+          new Thread(() -> {
+              try {
+                  Thread.sleep(1500);
+              } catch (InterruptedException e) {
+                  e.printStackTrace();
+              }
+              Platform.runLater(() -> f.setText("locals://history.liz3web"));
+          }).start();
 
     }
 

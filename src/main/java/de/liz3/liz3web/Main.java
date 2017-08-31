@@ -1,37 +1,30 @@
 package de.liz3.liz3web;
 
-import de.liz3.liz3web.gui.GuiManager;
+import com.teamdev.jxbrowser.chromium.BrowserCore;
+import com.teamdev.jxbrowser.chromium.internal.Environment;
+
+import java.io.IOException;
+import java.net.Socket;
 
 /**
- * Created by yannh on 29.11.2016.
+ * Created by yannh on 15.04.2017.
  */
 public class Main {
 
-    public static boolean isDebug = false;
-
-
     public static void main(String[] args) {
-        System.out.println("Start of the Program");
-        for(String str : args) {
 
-            if(str.equalsIgnoreCase("-debug")) {
+        try {
+            Socket s = new Socket("127.0.0.1", 15567);
 
-                isDebug = true;
-                System.out.println("Debug mode on");
+            if(args[0] != null) {
+                String line = "-link " + args[0] + "\n";
+                s.getOutputStream().write(line.getBytes());
+                s.getOutputStream().flush();
+                return;
             }
-        }
+           return;
+        } catch (IOException ignored) {}
 
-           dPrint("Starting Gui");
-
-        GuiManager.setupGui();
-
-
-
-    }
-
-    public static void dPrint(String msg) {
-        if(isDebug) {
-            System.out.println(msg);
-        }
+        Liz3Web.run(args);
     }
 }

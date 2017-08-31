@@ -1,0 +1,9 @@
+.tab-pane .tab
+{
+    -fx-background-color: #d0d0d0;
+
+}
+.tab-pane .tab:selected
+{
+    -fx-background-color: #e7e7e7;
+}

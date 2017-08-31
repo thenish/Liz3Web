@@ -1,31 +1,35 @@
-package de.liz3.liz3web.browser;
+package de.liz3.liz3web.browserinc;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
-
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Created by yannh on 25.02.2017.
  */
 public class History {
 
+    private String rootPath;
     private Map<String, HistoryEntry> entrys;
     private boolean loaded;
     private long index;
 
-    public History() {
+    public History(String rootPath) {
 
         entrys = new HashMap<>();
+        this.rootPath = rootPath;
 
     }
 
     public void loadIn() {
 
     try {
-        File f = new File("history.txt");
+        File f = new File(rootPath, "history.liz3web");
 
         if (!f.exists()) {
             loaded = true;
@@ -115,7 +119,7 @@ public class History {
         }
         new Thread(() -> {
             try {
-                PrintWriter w = new PrintWriter(new FileWriter(new File("history.txt")));
+                PrintWriter w = new PrintWriter(new FileWriter(new File("history.liz3web")));
 
                 w.println(arr.toString());
 

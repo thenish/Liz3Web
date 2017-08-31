@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+<BorderPane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.liz3.liz3web.gui.controller.BrowserTabController">
+   <top>
+      <BorderPane prefHeight="26.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <center>
+            <JFXTextField fx:id="urlBar" prefHeight="25.0" prefWidth="373.0" BorderPane.alignment="CENTER" />
+         </center>
+         <left>
+            <HBox prefHeight="75.0" prefWidth="77.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="backBtrn" text="&lt;" />
+                  <JFXButton fx:id="forBtn" text="&gt;" />
+                  <JFXButton fx:id="reloadBtn" prefHeight="26.0" prefWidth="28.0" text="R" />
+               </children>
+            </HBox>
+         </left>
+         <bottom>
+            <HBox fx:id="bookMarkBar" prefHeight="25.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+         </bottom>
+         <right>
+            <HBox fx:id="extensionBar" prefHeight="27.0" prefWidth="23.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="menuBtn" text="M" />
+               </children>
+            </HBox>
+         </right>
+      </BorderPane>
+   </top>
+   <center>
+      <Region prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

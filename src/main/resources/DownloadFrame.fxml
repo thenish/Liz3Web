@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="76.0" prefWidth="393.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.liz3.liz3web.gui.controller.DownloadFrameController">
+   <left>
+      <ImageView fx:id="imageView" fitHeight="59.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+   </left>
+   <bottom>
+      <ProgressBar fx:id="progessBar" prefHeight="0.0" prefWidth="393.0" progress="0.0" BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+      <Label fx:id="fileNameLabel" alignment="TOP_LEFT" prefHeight="70.0" prefWidth="315.0" text="Label" BorderPane.alignment="CENTER" />
+   </center>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="pauseBtn" prefHeight="25.0" prefWidth="163.0" text="Pause" />
+            <JFXButton fx:id="cancelBtn" prefHeight="25.0" prefWidth="121.0" text="Cancel" />
+         </children>
+      </VBox>
+   </right>
+</BorderPane>

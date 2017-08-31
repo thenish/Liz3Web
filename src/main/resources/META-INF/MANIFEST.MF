@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: de.liz3.liz3web.Main
+

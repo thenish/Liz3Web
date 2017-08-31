@@ -12,6 +12,7 @@ public class IOUtils {
     }
 
     public static byte[] convertStreamToByteArray(InputStream is) throws IOException {
+        if(is == null) return null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         for (int len; (len = is.read(buffer)) != -1; )
@@ -22,6 +23,7 @@ public class IOUtils {
     }
 
     public static void writeByteArrayToFile(File f, byte[] bytes) throws IOException {
+        if(f == null || bytes == null) return;
         FileOutputStream fos = new FileOutputStream(f);
         fos.write(bytes);
         fos.close();

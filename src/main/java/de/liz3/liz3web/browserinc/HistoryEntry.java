@@ -1,4 +1,4 @@
-package de.liz3.liz3web.browser;
+package de.liz3.liz3web.browserinc;
 
 
 import java.util.Date;

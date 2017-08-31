@@ -1,10 +1,11 @@
-package de.liz3.liz3web.browser;
+package de.liz3.liz3web.core;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMElement;
 import de.liz3.liz3web.gui.controller.SourceController;
 import de.liz3.liz3web.util.HttpMethods;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -48,11 +49,21 @@ public class BrowserSource {
             stage.setTitle("Source: " + browser.getURL());
             stage.centerOnScreen();
             stage.sizeToScene();
+            System.out.println(browser.getRemoteDebuggingURL());
+            controller.chromeDebugger(browser.getRemoteDebuggingURL());
+
         }
-        controller.setup(browser.getDocument(), browser.getURL());
-        controller.chromeDebugger(browser.getRemoteDebuggingURL());
         stage.show();
-        getRaws();
+        controller.setup(browser.getDocument(), browser.getURL());
+
+        new Thread(() -> {
+
+            System.out.println(browser.getRemoteDebuggingURL());
+
+
+                getRaws();
+
+        }).start();
     }
 
     private void getRaws() {
@@ -96,20 +107,20 @@ public class BrowserSource {
                         System.out.println(path + " https worked");
                         css.getChildren().add(it);
                         String finalHs = hs;
-                        controller.actions.put(path, () -> {
-                            controller.sourceArea.clear();
-                            controller.sourceArea.setText(formatCss(finalHs));
-                        });
+                      Platform.runLater(() -> controller.actions.put(path, () -> {
+                          controller.sourceArea.clear();
+                          controller.sourceArea.setText(formatCss(finalHs));
+                      }));
                     } else if( h != null) {
 
                         System.out.println(path + " http worked");
 
                         css.getChildren().add(it);
                         String finalH = h;
-                        controller.actions.put(path, () -> {
-                            controller.sourceArea.clear();
-                            controller.sourceArea.setText(formatCss(finalH));
-                        });
+                     Platform.runLater(() -> controller.actions.put(path, () -> {
+                         controller.sourceArea.clear();
+                         controller.sourceArea.setText(formatCss(finalH));
+                     }));
                     } else {
                         return;
                     }
@@ -141,20 +152,20 @@ public class BrowserSource {
 
                         css.getChildren().add(it);
                         String finalHs = hs;
-                        controller.actions.put(path, () -> {
-                            controller.sourceArea.clear();
-                            controller.sourceArea.setText(formatCss(finalHs));
-                        });
+                      Platform.runLater(() -> controller.actions.put(path, () -> {
+                          controller.sourceArea.clear();
+                          controller.sourceArea.setText(formatCss(finalHs));
+                      }));
                     } else if( h != null) {
 
                         System.out.println(path + " http worked");
 
                         css.getChildren().add(it);
                         String finalH = h;
-                        controller.actions.put(path, () -> {
-                            controller.sourceArea.clear();
-                            controller.sourceArea.setText(formatCss(finalH));
-                        });
+                       Platform.runLater(() -> controller.actions.put(path, () -> {
+                           controller.sourceArea.clear();
+                           controller.sourceArea.setText(formatCss(finalH));
+                       }));
                     } else {
                         return;
                     }
@@ -196,19 +207,19 @@ public class BrowserSource {
 
                         js.getChildren().add(it);
                         String finalHs = hs;
-                        controller.actions.put(path, () -> {
-                            controller.sourceArea.clear();
-                            controller.sourceArea.setText(formatJs(finalHs));
-                        });
+                      Platform.runLater(() -> controller.actions.put(path, () -> {
+                          controller.sourceArea.clear();
+                          controller.sourceArea.setText(formatJs(finalHs));
+                      }));
                     } else if( h != null) {
                         System.out.println(path + " http worked");
 
                         js.getChildren().add(it);
                         String finalH = h;
-                        controller.actions.put(path, () -> {
-                            controller.sourceArea.clear();
-                            controller.sourceArea.setText(formatJs(finalH));
-                        });
+                       Platform.runLater(() -> controller.actions.put(path, () -> {
+                           controller.sourceArea.clear();
+                           controller.sourceArea.setText(formatJs(finalH));
+                       }));
                     } else {
                         return;
                     }
@@ -241,19 +252,19 @@ public class BrowserSource {
 
                         js.getChildren().add(it);
                         String finalHs = hs;
-                        controller.actions.put(path, () -> {
-                            controller.sourceArea.clear();
-                            controller.sourceArea.setText(formatJs(finalHs));
-                        });
+                       Platform.runLater(() -> controller.actions.put(path, () -> {
+                           controller.sourceArea.clear();
+                           controller.sourceArea.setText(formatJs(finalHs));
+                       }));
                     } else if( h != null) {
                         System.out.println(path + " http worked");
 
                         js.getChildren().add(it);
                         String finalH = h;
-                        controller.actions.put(path, () -> {
-                            controller.sourceArea.clear();
-                            controller.sourceArea.setText(formatJs(finalH));
-                        });
+                       Platform.runLater(() -> controller.actions.put(path, () -> {
+                           controller.sourceArea.clear();
+                           controller.sourceArea.setText(formatJs(finalH));
+                       }));
                     } else {
                         return;
                     }
@@ -263,14 +274,16 @@ public class BrowserSource {
             }
         }
 
-        code.getChildren().addAll(html, css, js);
-        controller.getSourceTreeView().getRoot().getChildren().add(code);
+        Platform.runLater(() -> {
+            code.getChildren().addAll(html, css, js);
+            controller.getSourceTreeView().getRoot().getChildren().add(code);
 
-        controller.actions.put("Html", () -> {
+            controller.actions.put("Html", () -> {
 
-            controller.sourceArea.clear();
+                controller.sourceArea.clear();
 
-            controller.sourceArea.setText(r.getInnerHTML());
+                controller.sourceArea.setText(r.getInnerHTML());
+            });
         });
     }
 
@@ -285,5 +298,9 @@ public class BrowserSource {
         text = text.replace(";", ";\n").replace("{", "{\n").replace("}","\n}\n").replace(":", ": ");
 
         return text;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }
